@@ -1,6 +1,6 @@
 const gameBoard = (function(){
     //variables
-    let player1,player2,gameControler,gameStatus = [];
+    let player1,player2,gameControler,gameStatus = ".".repeat(9).split("");
     //DOM
     let player1NameInput = document.querySelector(".player-name-1");
     let player2NameInput = document.querySelector(".player-name-2");
@@ -27,25 +27,75 @@ const gameBoard = (function(){
             square.addEventListener("click",_chooseSquare.bind(square,i))
             gameSpace.appendChild(square);
         }
-
     }
 
     function _chooseSquare(index){
-        /* console.log(this);
-        console.log(index); */
-        if(gameControler.currentPlayer==player1){
-            gameControler.currentPlayer=player2;
-        }else{
-            gameControler.currentPlayer=player1;
-        }
+        
         if(this.innerText==""){
+            if(gameControler.currentPlayer==player1){
+                gameControler.currentPlayer=player2;
+            }else{
+                gameControler.currentPlayer=player1;
+            }
             this.innerText=gameControler.currentPlayer.selection;
+            gameStatus[index] = gameControler.currentPlayer.selection;
         }
         _checkGameStatus();
     }
     
     function _checkGameStatus(){
-        console.log("hola");
+        let condition1 = 
+        (
+            gameStatus[0]==gameControler.currentPlayer.selection &&
+            gameStatus[1]==gameControler.currentPlayer.selection &&
+            gameStatus[2]==gameControler.currentPlayer.selection 
+        );
+        let condition2 = 
+        (
+            gameStatus[3]==gameControler.currentPlayer.selection &&
+            gameStatus[4]==gameControler.currentPlayer.selection &&
+            gameStatus[5]==gameControler.currentPlayer.selection 
+        );
+        let condition3 = 
+        (
+            gameStatus[6]==gameControler.currentPlayer.selection &&
+            gameStatus[7]==gameControler.currentPlayer.selection &&
+            gameStatus[8]==gameControler.currentPlayer.selection 
+        );
+        let condition4 = 
+        (
+            gameStatus[0]==gameControler.currentPlayer.selection &&
+            gameStatus[3]==gameControler.currentPlayer.selection &&
+            gameStatus[6]==gameControler.currentPlayer.selection 
+        );
+        let condition5 = 
+        (
+            gameStatus[1]==gameControler.currentPlayer.selection &&
+            gameStatus[4]==gameControler.currentPlayer.selection &&
+            gameStatus[7]==gameControler.currentPlayer.selection 
+        );
+        let condition6 = 
+        (
+            gameStatus[2]==gameControler.currentPlayer.selection &&
+            gameStatus[5]==gameControler.currentPlayer.selection &&
+            gameStatus[8]==gameControler.currentPlayer.selection 
+        );
+        let condition7 = 
+        (
+            gameStatus[0]==gameControler.currentPlayer.selection &&
+            gameStatus[4]==gameControler.currentPlayer.selection &&
+            gameStatus[8]==gameControler.currentPlayer.selection 
+        );
+        let condition8 = 
+        (
+            gameStatus[3]==gameControler.currentPlayer.selection &&
+            gameStatus[5]==gameControler.currentPlayer.selection &&
+            gameStatus[7]==gameControler.currentPlayer.selection 
+        );
+        if(condition1 || condition2 || condition3 || condition4 || condition5 ||
+            condition6||condition7 || condition8){
+                alert(gameControler.currentPlayer.name);
+        }
     }
 })();
 
