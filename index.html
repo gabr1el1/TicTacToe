@@ -4,34 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tic-tac-toe</title>
     <script src="./script.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <header><h1>Tic-tac-toe</h1></header>
     <main>
+        
         <div class="gameboard">
 
         </div>
         <div class="game-info">
-            <div>
-                <h2>Player1</h2>
-                <input type="text" class="player-name-1">
-                <input type="text" class="player-selection-1">
+            <form action="" id="myForm"></form>
+            <div class="player-info">
+                <div class="player-name">
+                    <h2>Player 1</h2>
+                    <input id="player-name-1" form="myForm" type="text" required>
+                </div>
+                <div class="player-selection">
+                    <h2>X/O</h2>
+                    <input id="player-selection-1" type="text" form="myForm" required pattern="^[xo]$" title="Enter x or o">
+                </div>
             </div>
-            <div>
-                <h2>Player2</h2>
-                <input type="text" class="player-name-2">
-                <input type="text" class="player-selection-2">
+            <div class="player-info">
+                <div class="player-name">
+                    <h2>Player 2</h2>
+                    <input id="player-name-2" form="myForm" type="text" required>
+                </div>
+                <div class="player-selection">
+                    <h2>X/O</h2>
+                    <input id="player-selection-2" type="text" form="myForm" required pattern="^[xo]$" title="Enter x or o">
+                </div>
             </div>
-            <div>
-                <button class="start-button">Start game</button>
-                <button class="restart-button">Restart game</button>
+            <div class="buttons">
+                <button class="start-button" form="myForm" type="submit">
+                    Start game
+                </button>
+                <button class="restart-button">
+                    Restart game
+                </button>
             </div>
-            
         </div>
     </main>
-    
 </body>
 </html>
