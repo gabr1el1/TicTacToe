@@ -3,6 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+:root{
+    --main-color: linear-gradient(to right, lime, skyblue);
+}
 body,html{
     min-height: 100vh;
     min-width: 100vw;
@@ -14,7 +17,7 @@ body{
     gap: 15px;
 }
 header{
-    background: linear-gradient(to right, lime, skyblue);
+    background: var(--main-color);
     color: white
 }
 main{
@@ -30,6 +33,7 @@ main{
     border: medium solid lightgray;
     display: grid;
     grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
     transition: all 0.4s ease;
 }
 .game-info{
@@ -68,7 +72,7 @@ button{
     color: white;
 }
 .start-button{
-    background: linear-gradient(to right, lime, skyblue);
+    background: var(--main-color);
     border: none;
 }
 .restart-button{
@@ -80,10 +84,67 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 4rem;
+    transition: all 0.4s ease;
+}
+
+.square:hover{
+    background: lightgrey;
+}
+.x{
+    color: lime;
+}
+.o{
+    color: skyblue;
 }
 .game-ready{
     box-shadow: 0px 0px 12px limegreen;
 }
+.modal-dialog{
+    display: none;
+    position: fixed;
+    opacity: 0;
+    min-height: 100%;
+    min-width: 100%;
+	transition: opacity 0.4s ease-in;
+}
+
+.modal-dialog:target{
+    opacity: 1;
+    top:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.656);
+}
+
+.game-results{
+    background: var(--main-color);
+    color: white;
+    text-shadow: 5px 3px 5px black;
+    border-radius: 10px;
+    position: relative;
+    width: 45%;
+    text-align: center;
+    padding: 50px;
+}
+
+.close-button{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    text-decoration: none;
+    border-radius: 0px 10px 0px 0px;
+    color: white;
+    padding: 5px;
+    width: 30px;
+}
+
+.close-button:hover{
+    background: red;
+    
+}
+
 
 
 
