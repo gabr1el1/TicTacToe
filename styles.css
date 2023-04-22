@@ -30,6 +30,7 @@ main{
     border: medium solid lightgray;
     display: grid;
     grid-template-columns: repeat(3,1fr);
+    transition: all 0.4s ease;
 }
 .game-info{
     display: flex;

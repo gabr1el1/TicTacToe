@@ -1,120 +1,141 @@
 const gameBoard = (function(){
     //variables
-    let player1,player2,gameControler,gameStatus = ".".repeat(9).split("");
+    let gameControler;
     //DOM
     let player1NameInput = document.querySelector("#player-name-1");
     let player2NameInput = document.querySelector("#player-name-2");
     let player1SelecInput = document.querySelector("#player-selection-1");
     let player2SelecInput = document.querySelector("#player-selection-2");
     let formStartGame = document.querySelector("#myForm")
-    let startBtn = document.querySelector(".start-button");
     let restartBtn = document.querySelector(".restart-button");
     let gameSpace = document.querySelector(".gameboard");
-    let squares = [];
+    let squares = []
     //Bind
     formStartGame.addEventListener("submit",_init);
     restartBtn.addEventListener("click",_restart);
-
     //render
     _render();
     function _init(event){
         event.preventDefault();
-        player1 = player(player1NameInput.value,player1SelecInput.value);
-        player2 = player(player2NameInput.value,player2SelecInput.value);
         gameControler = gameFlow();
-        gameControler.currentPlayer = player1;
+        gameControler.player1 = player(player1NameInput.value,player1SelecInput.value);
+        gameControler.player2 = player(player2NameInput.value,player2SelecInput.value);
+        gameControler.currentPlayer = gameControler.player1;
         gameSpace.classList.add("game-ready");
+        _restart();
     }
     function _restart(){
-        gameSpace.classList.remove("game-ready");
-        player1NameInput.value = "";
-        player2NameInput.value = "";
-
+        squares.forEach(square=>{
+            square.innerText="";
+        });
+        gameControler.gameStatus = [[null,null,null],[null,null,null],[null,null,null]];
+        gameControler.gameDone = false; 
     }
-
     function _render(){
-        for(let i=0; i<9; i++){
-            let square = document.createElement("div");
-            square.classList.add("square");
-            square.addEventListener("click",_chooseSquare.bind(square,i))
-            gameSpace.appendChild(square);
-        }
-    }
-
-    function _chooseSquare(index){
-        
-        if(this.innerText==""){
-            this.innerText=gameControler.currentPlayer.selection;
-            gameStatus[index] = gameControler.currentPlayer.selection;
-            _checkGameStatus();
-            if(gameControler.currentPlayer==player1){
-                gameControler.currentPlayer=player2;
-            }else{
-                gameControler.currentPlayer=player1;
+        for(let i=0; i<3; i++){
+            for(let j=0; j<3;j++){
+                let square = document.createElement("div");
+                square.classList.add("square");
+                square.addEventListener("click",_chooseSquare.bind(square,i,j));
+                squares.push(square);
+                gameSpace.appendChild(square);
             }
         }
-        
     }
-    
+
+    function _chooseSquare(array,element){
+        if(this.innerText=="" && !gameControler.gameDone){
+            this.innerText=gameControler.currentPlayer.selection;
+            gameControler.gameStatus[array][element] = gameControler.currentPlayer.selection;
+            _checkGameStatus();
+            if(gameControler.currentPlayer==gameControler.player1){
+                gameControler.currentPlayer=gameControler.player2;
+            }else{
+                gameControler.currentPlayer=gameControler.player1;
+            }
+        }
+    }
     function _checkGameStatus(){
-        let condition1 = 
-        (
-            gameStatus[0]==gameControler.currentPlayer.selection &&
-            gameStatus[1]==gameControler.currentPlayer.selection &&
-            gameStatus[2]==gameControler.currentPlayer.selection 
-        );
-        let condition2 = 
-        (
-            gameStatus[3]==gameControler.currentPlayer.selection &&
-            gameStatus[4]==gameControler.currentPlayer.selection &&
-            gameStatus[5]==gameControler.currentPlayer.selection 
-        );
-        let condition3 = 
-        (
-            gameStatus[6]==gameControler.currentPlayer.selection &&
-            gameStatus[7]==gameControler.currentPlayer.selection &&
-            gameStatus[8]==gameControler.currentPlayer.selection 
-        );
-        let condition4 = 
-        (
-            gameStatus[0]==gameControler.currentPlayer.selection &&
-            gameStatus[3]==gameControler.currentPlayer.selection &&
-            gameStatus[6]==gameControler.currentPlayer.selection 
-        );
-        let condition5 = 
-        (
-            gameStatus[1]==gameControler.currentPlayer.selection &&
-            gameStatus[4]==gameControler.currentPlayer.selection &&
-            gameStatus[7]==gameControler.currentPlayer.selection 
-        );
-        let condition6 = 
-        (
-            gameStatus[2]==gameControler.currentPlayer.selection &&
-            gameStatus[5]==gameControler.currentPlayer.selection &&
-            gameStatus[8]==gameControler.currentPlayer.selection 
-        );
-        let condition7 = 
-        (
-            gameStatus[0]==gameControler.currentPlayer.selection &&
-            gameStatus[4]==gameControler.currentPlayer.selection &&
-            gameStatus[8]==gameControler.currentPlayer.selection 
-        );
-        let condition8 = 
-        (
-            gameStatus[2]==gameControler.currentPlayer.selection &&
-            gameStatus[4]==gameControler.currentPlayer.selection &&
-            gameStatus[6]==gameControler.currentPlayer.selection 
-        );
-        if(condition1 || condition2 || condition3 || condition4 || condition5 ||
-            condition6||condition7 || condition8){
-                alert(`${gameControler.currentPlayer.name} wins!`);
+        if(_checkWin()){
+            alert(`${gameControler.currentPlayer.name} wins`);
+            gameControler.gameDone = true;
+            gameSpace.classList.remove("game-ready");
+        }
+    }
+    function _checkWin(){
+        if(_checkWinRows()){
+            return true;
+        }else if(_checkWinColumns()){
+            return true;
+        }else if(_checkWinCrosses()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function _checkWinRows(){ 
+        for(let i=0;i<3;i++){
+            let countCurrent = 0, countContrary=0;
+            for(let j=0; j<3; j++){
+                if(gameControler.gameStatus[i][j]==gameControler.currentPlayer.selection){
+                    countCurrent++;
+                }
+            }
+            if(countCurrent==3){
+                return true;
+            }
+        }
+        return false;
+    }
+    function _checkWinColumns(){
+        for(let i=0;i<3;i++){
+            let countCurrent = 0, countContrary=0;
+            for(let j=0;j<3;j++){
+                if(gameControler.gameStatus[j][i]==gameControler.currentPlayer.selection){
+                    countCurrent++;
+                }
+            }
+            if(countCurrent==3){
+                return true;
+            }
+        }
+        return false;
+    }
+    function _checkWinCrosses(){
+        for(let i=0;i<2;i++){
+            let countCurrent = 0, countContrary=0;
+            if(i==0){
+                let k=2;
+                for(let j=2;j>=0;j--){
+                    console.log(j+" "+k);
+                    if(gameControler.gameStatus[j][k]==gameControler.currentPlayer.selection){
+                        countCurrent++;
+                    }
+                    k--;
+                }   
+            }else{
+                let k=0;
+                for(let j=2;j>=0;j--){
+                    console.log(j+" "+k);
+                    if(gameControler.gameStatus[j][k]==gameControler.currentPlayer.selection){
+                        countCurrent++;
+                    }
+                    k++;
+                } 
+            }
+            if(countCurrent==3){
+                return true;
+            }
         }
     }
 })();
 
 function gameFlow(){
-    let currentPlayer;
-    return {currentPlayer};
+    let currentPlayer
+    , gameStatus = [[null,null,null],[null,null,null],[null,null,null]]
+    ,player1,player2,gameDone=false,tie;
+
+    return {currentPlayer,gameStatus,player1,player2,gameDone,tie};
 }
 
 function player(name,selection){
