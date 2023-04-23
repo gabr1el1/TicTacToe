@@ -14,8 +14,20 @@ const gameBoard = (function(){
     //Bind
     formStartGame.addEventListener("submit",_init);
     restartBtn.addEventListener("click",_restart);
+    player1SelecInput.addEventListener("input",_validate);
+    player2SelecInput.addEventListener("input",_validate);
     //render
     _render();
+    function _validate(){
+        if(player1SelecInput.value.trim()!==player2SelecInput.value.trim()){
+            player1SelecInput.setCustomValidity("");
+            player2SelecInput.setCustomValidity("");
+        }else{
+            player1SelecInput.setCustomValidity("Selections must be different");
+            player2SelecInput.setCustomValidity("Selections must be different");
+        }
+    }
+
     function _init(event){
         event.preventDefault();
         gameControler = gameFlow();
