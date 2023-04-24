@@ -42,7 +42,8 @@ const gameBoard = (function(){
             square.innerText="";
         });
         gameControler.gameStatus = [[null,null,null],[null,null,null],[null,null,null]];
-        gameControler.gameDone = false; 
+        gameControler.gameDone = false;
+        gameControler.turn = 0; 
     }
     function _render(){
         for(let i=0; i<3; i++){
